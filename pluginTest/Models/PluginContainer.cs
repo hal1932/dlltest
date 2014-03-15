@@ -64,28 +64,16 @@ namespace pluginTest.Models
         public IEnumerable<T> GetPlugins<T>()
             where T: class, IPlugin
         {
-#if false
-            return _container.GetExportedValues<IPlugin>()
-                .Where(item => item is T)
-                .Select(item => item as T);
-#elif true
             return _plugins.Where(item => item.Value is T).Select(item => item.Value as T);
-#elif false
-            return _pluginDic.Where(item => item.Key is T).Select(item => item.Key as T);
-#endif
         }
 
 
         public IPluginMetadata GetPluginMetadata(IPlugin plugin)
         {
-#if true
             IPluginMetadata metadata;
             if (_pluginDic.TryGetValue(plugin, out metadata))
                 return metadata;
             return null;
-#else
-            return _plugins.Where(item => item.Value == plugin).Select(item => item.Metadata).First();
-#endif
         }
     }
 }
